@@ -12,3 +12,6 @@ samtools view only_good_cell.bam -s 0.8 -b -o 0.8coverage_good_cell.bam
 #pileup
 cellsnp-lite -s "only_good_cell.bam" -O pbmc10donor -R ref_donors.vcf.gz -b whitelistbarcode.tsv --gzip -p 15 &
 
+#doublets
+python synth_pool.py -s only_good_cell.bam -b whitellistbarcode.tsv  -d 0.2 -o doublet_stim/d10000 -p 1 --randomSEED=42
+
