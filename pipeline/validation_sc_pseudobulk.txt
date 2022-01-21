@@ -1,0 +1,1 @@
+/home/ccheng/subset-bam_linux" --bam "/media/zhanglab/scdata/pbmc89/outs/possorted_genome_bam.bam" --cell-barcodes barcode.tsv  --log-level info --cores 20 --out-bam pbmc_only_good_cell.bam
