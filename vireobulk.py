@@ -1,132 +1,58 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct  4 19:46:07 2022
 
-@author: zhizhiflyfly
-"""
 
-## header file function (need to be script )
-import sys
-import numpy as np
-import vireoSNP
-from vireoSNP.utils.vcf_utils import read_sparse_GeneINFO, GenoINFO_maker
+import argparse
+#from .utils.base import VCF_to_sdf
+from base import *
+from vireoSNP.utils.vcf_utils import load_VCF, write_VCF, parse_donor_GPb
+from version import __version__
 import pandas as pd
+import sys
 
-import re as re
-def VCF_to_sdf(bulk_data):
-    df_empty=pd.DataFrame(columns=["variants","AD","DP","GT"])
-    bulk_dat = read_sparse_GeneINFO(bulk_data['GenoINFO'], keys=['AD', 'DP'])
-    df_empty["variants"]=bulk_data["variants"]
-    df_empty["AD"]=bulk_dat["AD"].toarray()
-    df_empty["DP"]=bulk_dat["DP"].toarray()
-    return (df_empty)
+def main():
+   """
+    parser = argparse.ArgumentParser(description='input bulk pile up result reference,and annotation for SNPs(optional)')
+   
+   
+   ##sample options  data
+   parser.add_argument("--cellData", "-c", dest="cell_data", default=None,required=True,
+       help=("The cell genotype file in VCF format or cellSNP folder with "
+             "sparse matrices."))
+   
+   parser.add_argument("--donorFile", "-d", dest="donor_file", default=None,required=True,
+       help=("The donor genotype file in VCF format. Please filter the sample "
+       "and region with bcftools -s and -R first!"))
+   
+   
+   parser.add_argument("--outDir", "-o", dest="out_dir", default=None,
+       help=("Dirtectory for output files [default: $cellFilePath/vireo]"))
 
-def rematch_vcf(bulk_data,donor_vcf):
-    df_bulk=VCF_to_sdf(bulk_data)
-    df_donor=pd.DataFrame(columns=["variants","GT"])
-    df_donor["variants"]=donor_vcf["variants"]
-    df_donor["GT"]=donor_vcf["GenoINFO"]["GT"]     
-    donor_tensor = vireoSNP.vcf.parse_donor_GPb(donor_vcf['GenoINFO']["GT"], "GT")
-    itersect_variants=pd.Series(list(set(df_donor["variants"]).intersection(set(df_bulk["variants"]))))
-    id_d=df_donor["variants"].isin(itersect_variants)
-    id_b=df_bulk["variants"].isin(itersect_variants)
-    df_bulk=df_bulk[id_b]
-    df_donor=df_donor[id_d]
-    donor_tensor=donor_tensor[id_d]
-    return(df_bulk,df_donor,donor_tensor)
-def rematch_vcf_annotated(bulk_data,donor_vcf,donor_vcf_anno):
-    df_bulk=VCF_to_sdf(bulk_data)
-    df_donora=pd.DataFrame(columns=["variants","function","genes","avsnp","GT"])
-    df_donora["variants"]=donor_vcf_anno["variants"]  
-    df_donora["function"]=donor_vcf_anno["function."]
-    df_donora["genes"]=donor_vcf_anno["genes"]
-    df_donora["avsnp"]=donor_vcf_anno["avsnp"]
-    df_donor=pd.DataFrame(columns=["variants","GT"])
-    df_donor["variants"]=donor_vcf["variants"]
-    df_donor["GT"]=donor_vcf["GenoINFO"]["GT"]     
-    donor_tensor = vireoSNP.vcf.parse_donor_GPb(donor_vcf['GenoINFO']["GT"], "GT")
-    itersect_variants=pd.Series(list(set(df_donora["variants"]).intersection(set(df_bulk["variants"]))))
-    id_d=df_donor["variants"].isin(itersect_variants)
-    id_b=df_bulk["variants"].isin(itersect_variants)
-    id_da=df_donora["variants"].isin(itersect_variants)
-    df_bulk=df_bulk[id_b]
-    df_donor=df_donor[id_d]
-    df_donora=df_donora[id_da]
-    donor_tensor=donor_tensor[id_d]
-    df_donora["GT"]=df_donora["GT"]=df_donor["GT"].tolist()
-    return(df_bulk,df_donora,donor_tensor)
-def merged_VCF_to_sdf(bulk_data_merge):
-    df_empty=pd.DataFrame(columns=["variants","AD","DP","OTH"])
-    df_empty["variants"]=bulk_data_merge["variants"]
-    c=np.array(bulk_data_merge['FixedINFO']["INFO"])
-    for i in range(len(c)):
-        tem=c[i].tolist().split(";",-1)
-        df_empty["AD"][i]=float(re.sub("AD=","",tem[0]))
-        df_empty["DP"][i]=float(re.sub("DP=","",tem[1]))
-        df_empty["OTH"][i]=float(re.sub("OTH=","",tem[2]))
+   parser.add_argument("--annotation", "-a", dest="anno_file", default=None,
+    help=("annotation for SNPs and Genes"))
+    
+   parser.add_argument("--forceLearnGT", dest="force_learnGT", default=False,
+       action="store_true", help="If use, treat donor GT as prior only.")
 
-    return(df_empty)
-def rematch_merge_vcf_annotated(bulk_data,donor_vcf,donor_vcf_anno):
-    df_bulk=merged_VCF_to_sdf(bulk_data)
-    df_donora=pd.DataFrame(columns=["variants","function","genes","avsnp","GT"])
-    df_donora["variants"]=donor_vcf_anno["variants"]  
-    df_donora["function"]=donor_vcf_anno["function."]
-    df_donora["genes"]=donor_vcf_anno["genes"]
-    df_donora["avsnp"]=donor_vcf_anno["avsnp"]
-    df_donor=pd.DataFrame(columns=["variants","GT"])
-    df_donor["variants"]=donor_vcf["variants"]
-    df_donor["GT"]=donor_vcf["GenoINFO"]["GT"]     
-    donor_tensor = vireoSNP.vcf.parse_donor_GPb(donor_vcf['GenoINFO']["GT"], "GT")
-    itersect_variants=pd.Series(list(set(df_donora["variants"]).intersection(set(df_bulk["variants"]))))
-    id_d=df_donor["variants"].isin(itersect_variants)
-    id_b=df_bulk["variants"].isin(itersect_variants)
-    id_da=df_donora["variants"].isin(itersect_variants)
-    df_bulk=df_bulk[id_b]
-    df_donor=df_donor[id_d]
-    df_donora=df_donora[id_da]
-    donor_tensor=donor_tensor[id_d]
-    df_donora["GT"]=df_donora["GT"]=df_donor["GT"].tolist()
-    return(df_bulk,df_donora,donor_tensor)
-def find_all(data, s):
-    r_list = []
-    for r in range(len(data)):
-        r_list.append( s in data[r])
- 
-    return(r_list)
-def removedfault(df_bulk,df_donora,donor_tensor):
-    id_d=[]
-    for bool in find_all(np.array(df_donora["GT"]).tolist(),"./."):
-        id_d.append(not bool)
-    df_donor=df_donora[id_d]
-    df_gt=donor_tensor[id_d]
-    id_b=df_bulk["variants"].isin(df_donor["variants"])
-    df_b=df_bulk[id_b]
-    return(df_b,df_donor,df_gt)
+   parser.add_argument('--gene', dest='mode', action='store_const',
+                    const="gene", default="bulk",help='gene level demutiplexing (default: demutiplex at propotion level)')
 
-def prediction_bulk(df_b,df_d,df_gt,donor_vcf,pre_model,genelist):
-    gene_unique=genelist
-    new=pd.DataFrame(index=gene_unique,columns=donor_vcf['samples']+["chi","p","numSNP"])
-    pre_psi=pre_model
-    test_d=df_d
-    test_b=df_b
-    test_gt=df_gt
-    sample_list=donor_vcf['samples']
-    nk=len(donor_vcf['samples'])
-    for i in range(len(gene_unique)):
-        sub_d=test_d[test_d["genes"]==gene_unique[i]]
-        sub_b=test_b[test_b["variants"].isin(test_d[test_d["genes"]==gene_unique[i]]["variants"])]
-        sub_gt=test_gt[test_d["genes"]==gene_unique[i]]
-        a=np.array(sub_b["AD"])
-        d=np.array(sub_b["DP"])
-        a=np.array(list(map(float,a)))
-        d=np.array(list(map(float,d)))
-        model =vireoSNP.VireoBulk(nk)
-        model.fit(a,d,sub_gt,learn_theta=False )
-        pv=vireoSNP.LikRatio_test(model.psi,pre_psi,a,d,sub_gt,model.theta)
-        for j in range(len(model.psi)):
-            new[sample_list[j]][i]=model.psi[j]
-        new["chi"][i]=pv[0]
-        new["p"][i]=pv[1]
-        new["numSNP"][i]=len(a)
-    return(new)
+   args = parser.parse_args()
+   """
+   print(__version__)
+   ##test1 
+   
+#def preprocess():
+   donor_vcf=load_VCF(   "/home/flyflyzhizhi/Vireobulk_analysis/data/filter_pbmc10donors.vcf.gz",  biallelic_only=True,    load_sample=True, sparse=False , format_list=None)
+   bulk_data=load_VCF("/home/flyflyzhizhi/Vireobulk_analysis/data/cellSNP.base.vcf.gz", biallelic_only=True,load_sample=False,format_list=None,)
+ #  if model== "bulk":
+  #     df_anno=pd.read_csv("data/scvcf_annotated_processed.csv")
+   df_b=merged_VCF_to_sdf(bulk_data)
+   Ndonors=10
+   df_d=merged_VCF_to_sdf(donor_vcf)
+   donor_tensor = vireoSNP.vcf.parse_donor_GPb(donor_vcf['GenoINFO']["GT"], "GT")
+   df_b,df_d,m_gt=removedfault(df_b, df_d, donor_tensor)
+main()
+   
+   
+    
