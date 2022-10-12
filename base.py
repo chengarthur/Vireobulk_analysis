@@ -67,7 +67,19 @@ def merged_VCF_to_sdf(bulk_data_merge):
     
 
     return(df_empty)
-
+def rematch_merge_vcf_noannotated(bulk_data,donor_vcf):
+    df_bulk=merged_VCF_to_sdf(bulk_data)
+    df_donor=pd.DataFrame(columns=["variants","GT"])
+    df_donor["variants"]=donor_vcf["variants"]
+    df_donor["GT"]=donor_vcf["GenoINFO"]["GT"]
+    donor_tensor = vireoSNP.vcf.parse_donor_GPb(donor_vcf['GenoINFO']["GT"], "GT")
+    itersect_variants=pd.Series(list(set(df_donor["variants"]).intersection(set(df_bulk["variants"]))))
+    id_d=df_donor["variants"].isin(itersect_variants)
+    id_b=df_bulk["variants"].isin(itersect_variants)
+    df_bulk=df_bulk[id_b]
+    df_donor=df_donor[id_d]
+    donor_tensor=donor_tensor[id_d]
+    return(df_bulk,df_donor,donor_tensor)
 def rematch_merge_vcf_annotated(bulk_data,donor_vcf,donor_vcf_anno):
     df_bulk=merged_VCF_to_sdf(bulk_data)
     df_donora=pd.DataFrame(columns=["variants","function","genes","avsnp","GT"])
