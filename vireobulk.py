@@ -26,6 +26,10 @@ def main():
    
    parser.add_argument("--outDir", "-o", dest="out_dir", default=os.getcwd(),
        help=("Dirtectory for output files [default use os.getcwd as directory"))
+   
+   parser.add_argument("--preflixname", "-n", dest="pre_name", default=None,
+       help=("preflix name of output names"))
+   
 
    parser.add_argument("--annotation", "-a", dest="anno_file", default=None,
     help=("annotation for SNPs and Genes"))
@@ -37,6 +41,7 @@ def main():
                     const="gene", default="bulk",help='If use,into gene level demutiplexing (default: demutiplex at propotion level)')
 ##init args
    args = parser.parse_args()
+   prename=args.pre_name
    bulk_data=args.cell_data
    donor_data=args.donor_file
    mode_tag=args.mode
@@ -60,7 +65,8 @@ def main():
        model_returned=preprocess(bulk_data, donor_data,forceLearnGT_tag)
        print(model_returned.psi)
        OUTPUT_MODE=1
-       with open("modelsummary.txt","w") as f:
+       modename=os.path.join(outdir,"%smodelsummary.txt") %prename
+       with open(modename,"w") as f:
            f.write(','.join(df['samples']))
            f.write("\n")
            f.write(str(model_returned.psi).replace("\n",""))
@@ -74,14 +80,15 @@ def main():
        print(model_returned.psi)
        print(bulk_demuti_result)
        OUTPUT_MODE=2
-       with open("modelsummary.txt","w") as f:
+       modename=os.path.join(outdir,"%smodelsummary.txt")%prename
+       with open(modename,"w") as f:
            f.write(','.join(df['samples']))
            f.write("\n")
            f.write(str(model_returned.psi).replace("\n",""))
            f.write("\n")
            f.write(str(model_returned.theta))
     
-       bulk_demuti_result.to_csv(os.path.join(outdir,"demutiplxing_result_output.csv"))
+       bulk_demuti_result.to_csv(os.path.join(outdir,"%sdemutiplxing_result_output.csv"))%prename
        
    ##test1 
    
