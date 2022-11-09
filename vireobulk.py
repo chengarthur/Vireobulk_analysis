@@ -88,7 +88,7 @@ def main():
            f.write("\n")
            f.write(str(model_returned.theta))
     
-       bulk_demuti_result.to_csv(os.path.join(outdir,"%sdemutiplxing_result_output.csv"))%prename
+       bulk_demuti_result.to_csv(os.path.join(outdir,"%sdemutiplxing_result_output.csv")%prename) 
        
    ##test1 
    
