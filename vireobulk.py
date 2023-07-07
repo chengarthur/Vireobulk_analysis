@@ -65,13 +65,15 @@ def main():
        model_returned=preprocess(bulk_data, donor_data,forceLearnGT_tag)
        print(model_returned.psi)
        OUTPUT_MODE=1
-       modename=os.path.join(outdir,"%smodelsummary.txt") %prename
+       modename=os.path.join(outdir,"%smodeltheta.txt") %prename
+       result1=pd.DataFrame(columns=["samples","propotion"])
+       result1["samples"]=df['samples']
+       result1["propotion"]=model_returned.psi  
+       result1.to_csv(os.path.join(outdir,"%sdemutiplxing_propotion_output.csv")%prename)
        with open(modename,"w") as f:
-           f.write(','.join(df['samples']))
-           f.write("\n")
-           f.write(str(model_returned.psi).replace("\n",""))
-           f.write("\n")
+          
            f.write(str(model_returned.theta))
+           
        
       ##-c "/home/flyflyzhizhi/Vireobulk_analysis/data/cellSNP.base.vcf.gz" -d "/home/flyflyzhizhi/Vireobulk_analysis/data/filter_pbmc10donors.vcf.gz" --gene -a "/home/flyflyzhizhi/Vireobulk_analysis/data/scvcf_annotated_processed.csv" 
 
@@ -80,12 +82,15 @@ def main():
        print(model_returned.psi)
        print(bulk_demuti_result)
        OUTPUT_MODE=2
-       modename=os.path.join(outdir,"%smodelsummary.txt")%prename
+       
+       result1=pd.DataFrame(columns=["samples","propotion"])
+       result1["samples"]=df['samples']
+       result1["propotion"]=model_returned.psi  
+       
+       modename=os.path.join(outdir,"%smodeltheta.txt")%prename
+       result1.to_csv(os.path.join(outdir,"%sdemutiplxing_propotion_output.csv")%prename)
        with open(modename,"w") as f:
-           f.write(','.join(df['samples']))
-           f.write("\n")
-           f.write(str(model_returned.psi).replace("\n",""))
-           f.write("\n")
+         
            f.write(str(model_returned.theta))
     
        bulk_demuti_result.to_csv(os.path.join(outdir,"%sdemutiplxing_result_output.csv")%prename) 
