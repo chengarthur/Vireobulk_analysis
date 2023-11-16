@@ -1,0 +1,6 @@
+cellSNP==0.3.2
+numpy==1.24.4
+pandas==1.5.3
+pysam==0.21.0
+vireoSNP==0.5.8
+
