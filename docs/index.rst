@@ -14,7 +14,8 @@ Welcome to vireo_bulk's documentation!
    quickstart
    preprocessing
    analysis/analysis
-   analysis/10donorpbmc_notebook.ipynotebook
+   analysis/donor10pbmctest_md
+   analysis/donor10pbmctest_nb
    reference
 
 
