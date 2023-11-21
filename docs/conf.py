@@ -43,7 +43,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # Configure the notebook converter
-nbsphinx_execute = 'never'
+
 
 # -- Options for HTML output -------------------------------------------------
 
