@@ -39,13 +39,13 @@ In gene abundance step Vireo-bulk requires addition gene annotation to get the g
 perl /annovar/annotate_variation.pl -buildver hg38 -downdb -webfrom annovar refGene humandb/
 perl /annovar/nnotate_variation.pl -buildver hg38 -downdb -webfrom annovar avsnp150 humandb/
 
-##convet & index 
+##convert & annotated by annovar 
 
 perl annovar/convert2annovar.pl -format vcf4 cellSNP.base.vcf.gz > base.annovar 
 perl annovar/table_annovar.pl base.annovar annovar/humandb/ -buildver hg38 -out filtered_table -remove -protocol refGene,avsnp150 -operation g,f -nastring . -csvout -polish
 
 
-## conver to VireoBulk input 
+## convert to VireoBulk input 
 Rscript scripts/convert.R --annofile filtered_table.hg38_multianno.csv --out scvcf_annotated_processed.csv
 
 

@@ -9,7 +9,7 @@ Vireobulk is a tool that leverages SNPs to devolve mixed donor RNAseq samples, w
 ## Donor decomposition 
 With given  donor SNP reference (VCF file) and piled up Bulk RNAseq result(VCF file ), Vireobulk can accurate estimates the percentage of in an mixed donor sample in situation such as bone marrow transplantation, chimeric organoids, pooled iPSC cell lines. In most cases, vireo bulk can demultiplex  
 from 2 to more than 20 donors 
-## Gene abundance inference 
+## Gene abundance inference
 
 with detailed Gene-SNP annotation,  vireo bulk can even give the estimation of gene abundance of different donor 
 **reminder**: the power of vireo-bulk rely on sequencing depth and the number of donor-Genes pairs.
