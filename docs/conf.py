@@ -33,7 +33,7 @@ release = '0.0.1'
 
 extensions = [
     'recommonmark',
-    'sphinx.ext.autosectionlabel',
+    'myst_nb',
     'nbsphinx',
 ]
 
