@@ -1,4 +1,4 @@
-# reference 
+# Reference 
 
 [**Vireo: Bayesian demultiplexing of pooled single-cell RNA-seq data without genotype reference**](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1865-2)
 

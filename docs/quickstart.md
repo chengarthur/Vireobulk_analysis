@@ -1,6 +1,6 @@
-## QuickStart 
+# QuickStart 
 users can use the demo data to run Vireobulk test 
-### installation 
+### Installation 
 ```
 
 
@@ -9,7 +9,7 @@ cd Vireobulk_analysis/
 pip install -r requirements.txt
 ```
 
-### run test1 Donor decomposition
+### Run test1 Donor decomposition
 ```
 
 python vireobulk.py -c "data/cellSNP.base.vcf.gz" -n test1 -d "data/filter_pbmc10donors.vcf.gz"
@@ -19,7 +19,7 @@ demultiplexed donor ratio contains sample X ratio matrix in piled up sample
 mode theta represents the inferred B Allele frequency of model, the more closed to [0,0.5,1]，the more reliable of the result, usually BAF > 0.40 represent confident inference 
 
 
-### run test1 gene abundance estimate  
+### Run test1 gene abundance estimate  
 ```
 python vireobulk.py -c "data/cellSNP.base.vcf.gz" -n test1 - -n test1 -d "data/filter_pbmc10donors.vcf.gz" -a "data/scvcf_annotated_processed.csv" --gene
 
@@ -29,8 +29,7 @@ python vireobulk.py -c "data/cellSNP.base.vcf.gz" -n test1 - -n test1 -d "data/f
 This step will generate summary file for demultiplexed donor ratio and model.theta file ,and a geneX donor ratio matrix ,and withe the p value of if the Gene is differentially expressed among donors.
 
 
-
-## Tag usage
+### Tag usage
 ```
 --cellData -c 
 ```
@@ -48,7 +47,7 @@ the donor genotype reference file of donors exist in pooled bulk samples ,you co
 ```
 Directory for output files, defaults is current workdir
 
-### **optional**
+### Optional
 
 ```
 --gene
@@ -57,7 +56,7 @@ when this flag is input , run gene level demultiplexing mode
   
   
 ```
-  --notLearnGT", dest="force_learnGT", default=True,
+  --notLearnGT
 ```
 If use, close learnGT mode for ASE in donor ratio demutiplex, default use learned mode
 
