@@ -13,9 +13,7 @@ Welcome to vireo_bulk's documentation!
    vireobulk
    quickstart
    preprocessing
-   analysis/analysis
-   analysis/donor10pbmctest_md
-   analysis/donor10pbmctest_nb
+   analysis/index
    reference
 
 
