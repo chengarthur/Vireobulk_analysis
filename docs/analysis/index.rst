@@ -10,11 +10,9 @@ Welcome to vireo_bulk's documentation!
    :maxdepth: 2
    :caption: index:
    
-   vireobulk
-   quickstart
-   preprocessing
-   analysis/index
-   reference
+    
+   analysis
+   10donorpbmc_notebook.ipynb
 
 
 Indices and tables
