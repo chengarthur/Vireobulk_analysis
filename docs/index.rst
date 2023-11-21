@@ -8,13 +8,13 @@ Welcome to vireo_bulk's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: index:
+   :caption: content:
    
    vireobulk
    quickstart
    preprocessing
    analysis/analysis
-   analysis/10donorpbmc_notebook
+   analysis/10donorpbmc_notebook.ipynotebook
    reference
 
 
