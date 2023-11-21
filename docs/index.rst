@@ -13,7 +13,8 @@ Welcome to vireo_bulk's documentation!
    vireobulk
    quickstart
    preprocessing
-   analysis/index
+   analysis/analysis
+   analysis/10donorpbmc_notebook
    reference
 
 
