@@ -9,8 +9,5 @@ We will soon  provide some analysis example of how to use  vireobulk  to demulti
 .. toctree::
    :maxdepth: 1
    :caption: index:
-   :hidden:
-    
-   
    10donorpbmc_notebook
 
