@@ -1,23 +1,16 @@
-.. vireo_bulk documentation master file, created by
-   sphinx-quickstart on Fri Nov 17 11:33:07 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. 
 
-Welcome to vireo_bulk's documentation!
+
+ vireo_bulk's analysis pipeline
 ======================================
+Analysis 
+We will soon  provide some analysis example of how to use  vireobulk  to demultiplex mixed bulk samples and related visualization code including how to perform validation test and run simulation 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: index:
-   
+   :hidden:
     
-   analysis
-   10donorpbmc_notebook.ipynb
+   
+   10donorpbmc_notebook
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
