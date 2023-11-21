@@ -14,7 +14,6 @@ Welcome to vireo_bulk's documentation!
    quickstart
    preprocessing
    analysis/index
-   donoor10nb
    reference
 
 
