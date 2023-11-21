@@ -34,7 +34,7 @@ release = '0.0.1'
 extensions = [
     'recommonmark',
     'myst_nb',
-    'nbsphinx',
+    
 ]
 
 
