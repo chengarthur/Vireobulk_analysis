@@ -1,6 +1,7 @@
 # Vireobulk： Bayesian methods for bulk multiplexed RNA demultiplexing 
 
 
+[![DOI](https://zenodo.org/badge/450400292.svg)](https://zenodo.org/doi/10.5281/zenodo.10823710)
 
 Vireobulk is a tool that leverages SNPs to devolve mixed donor RNAseq samples, which includes two main  modules :
 
